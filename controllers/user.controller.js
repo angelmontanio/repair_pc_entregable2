@@ -14,6 +14,13 @@ const getAllUser = async (req, res) => {
 const createUser = async (req, res) => {
   try {
     const { name, email, password, role } = req.body;
+    const user= await User.findOne({where:{email}})
+    if(user){
+      return res.status(403).json({
+        status: 'error',
+        message: 'your email already exists in the database'
+      })
+    }
     const newUser = await User.create({ name, email, password, role });
     res.status(201).json({ newUser });
   } catch (error) {
