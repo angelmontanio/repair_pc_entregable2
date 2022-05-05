@@ -1,46 +1,30 @@
 const { User } = require('../models/user.model');
 
-const getAllUser = async (req, res) => {
-  try {
+//Utils
+const {catchAsync} = require('../utils/catchAsync')
+
+const getAllUser = catchAsync (async (req, res, next) => {
     const users = await User.findAll();
     res.status(200).json({
       users,
     });
-  } catch (error) {
-    console.log(error);
-  }
-};
+});
 
-const createUser = async (req, res) => {
-  try {
+const createUser = catchAsync (async (req, res, next) => {
+
     const { name, email, password, role } = req.body;
-    const user= await User.findOne({where:{email}})
-    if(user){
-      return res.status(403).json({
-        status: 'error',
-        message: 'your email already exists in the database'
-      })
-    }
     const newUser = await User.create({ name, email, password, role });
     res.status(201).json({ newUser });
-  } catch (error) {
-    console.log(error);
-  }
-};
+});
 
-const getUserbyId = async (req, res) => {
-  try {
+const getUserbyId = catchAsync ( async (req, res, next) => {
     const { user } = req;
-
     res.status(200).json({
       user,
     });
-  } catch (error) {
-    console.log(error);
-  }
-};
+});
 
-const updateUser = async (req, res) => {
+const updateUser = async (req, res, next) => {
   try {
     const { name, email } = req.body;
     const { user } = req;
@@ -52,7 +36,7 @@ const updateUser = async (req, res) => {
   }
 };
 
-const deleteUser = async (req, res) => {
+const deleteUser = async (req, res, next) => {
   try {
     const { id } = req.params;
     const user = await User.findOne({ where: { id } });

@@ -1,4 +1,5 @@
 const express = require('express');
+const { body } = require('express-validator');
 
 //Controller
 const {
@@ -12,14 +13,19 @@ const {
 
 //middlewares
 const { repairExist } = require('../middlewares/repair.middlewares');
+const {
+  checkValidations,
+  createPostValidations,
+} = require('../middlewares/validations.middlewares');
 
 const router = express.Router();
 
-router.get('/', getPendingRepairs);
+router
+  .route('/')
+  .get(getPendingRepairs)
+  .post(createPostValidations, checkValidations, createRepair);
 
-router.get('/all', getAllRepairs);
-
-router.post('/', createRepair);
+  router.get('/all', getAllRepairs);
 
 router
   .route('/:id')

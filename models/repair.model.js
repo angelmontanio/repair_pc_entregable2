@@ -12,6 +12,15 @@ const Repair = db.define('repair', {
     allowNull: false,
     type: DataTypes.DATEONLY,
   },
+  computerNumber: {
+    type: DataTypes.STRING,
+    allowNull: false,
+    unique: true,
+  },
+  comments: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
   status: {
     type: DataTypes.STRING,
     defaultValue: 'pending',
